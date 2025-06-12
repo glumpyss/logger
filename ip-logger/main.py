@@ -1,6 +1,6 @@
 from flask import Flask, request
 import requests
-import os  # MOVE this import here, not inside the main guard
+import os
 
 app = Flask(__name__)
 
@@ -13,9 +13,7 @@ def home():
     return "<h1>Welcome!</h1>"
 
 def send_to_discord(ip):
-    data = {
-        "content": f"New visitor IP: {ip}"
-    }
+    data = {"content": f"New visitor IP: {ip}"}
     try:
         r = requests.post(WEBHOOK_URL, json=data)
         print(f"Discord webhook status: {r.status_code}")
@@ -23,6 +21,7 @@ def send_to_discord(ip):
         print(f"Error sending to Discord webhook: {e}")
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # NOW this should work
+    port = int(os.environ.get("PORT", 5000))  # Railway will route traffic to this port
     print(f"Starting app on port {port}")
     app.run(host='0.0.0.0', port=port)
+
